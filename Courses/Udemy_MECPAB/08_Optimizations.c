@@ -44,7 +44,3 @@ int main(void){
 
 /* Settings -> MCU GCC Comp. -> Optimiz. -> OPT. Level here for access.*/   
 
-/* Volatile DATA*/
-uint8_t volatile my_data;
-
-uint8_t volatile* pStatusReg;
