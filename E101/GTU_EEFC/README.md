@@ -2,7 +2,7 @@
 
 Gebze Technical University - Electronic Engineering fcayci Lecture Documents. 
 Examples for using Cortex-M0+ based stm32g0 processor. All the examples are made 
-for Nucleo G031K8 board. sample codes are created to start with number_xxx. Codes starting with 00_xxx are sample codes written by fcayci. The codes that start as 01_xxx and continue to increase are project files written by me for specific purposes. Stm32g0 proccessor's pinouts and all the alternative functionality of 
+for Nucleo G031K8 board. Sample codes are created to start with number_xxx. Codes starting with 00_xxx are sample codes written by fcayci. The codes that start as 01_xxx and continue to increase are project files written by me for specific purposes. Stm32g0 proccessor's pinouts and all the alternative functionality of 
 the board is given in the Figure below.
 
 ## STM32G0
