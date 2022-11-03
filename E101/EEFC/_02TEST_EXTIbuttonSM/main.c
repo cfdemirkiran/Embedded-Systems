@@ -16,62 +16,58 @@ void delay(volatile uint32_t);
 void KeypadAllRows_SET(void);
 void KeypadAllRows_RESET(void);
 void SSD_RESET(void);
-void SSD_SET(volatile uint8_t);
+void SSD_SET(volatile uint32_t);
 void SSD_Close(void);
+void SSD_Fire(void);
 
-volatile uint8_t Counter = 0;
-volatile uint8_t KeyPress;
-volatile uint8_t SSD_Digit;
-volatile uint8_t SSD_Digit1 = 0;
-volatile uint8_t SSD_Digit2 = 0;
-volatile uint8_t SSD_Digit3 = 0;
-volatile uint8_t SSD_Digit4 = 0;
+volatile uint32_t KeyPress;
+volatile uint32_t SSD_Digit;
+volatile uint32_t SSD_Digit1 = 0;
+volatile uint32_t SSD_Digit2 = 0;
+volatile uint32_t SSD_Digit3 = 0;
+volatile uint32_t SSD_Digit4 = 0;
 
-/* Interrupt Handler */
+	/* Interrupt Handler */
 	void EXTI4_15_IRQHandler(void){
 		/* keypad press from C1 */
 		KeypadAllRows_RESET();
+		GPIOB->ODR |= (1U << 0);       	//Row4
+		if((GPIOB->IDR & (1U << 5)) == (1U << 5)) //2
+			KeyPress = 0;
+
+		KeypadAllRows_RESET();
 		GPIOA->ODR |= (1U << 8);       //Row1
-		if((GPIOB->IDR & (1U << 4)) == (1U << 4)){      //1
+		if((GPIOB->IDR & (1U << 4)) == (1U << 4)) //1
 			KeyPress = 1;
 
-		}
-		else if((GPIOB->IDR & (1U << 5)) == (1U << 5)){ //2
-			KeyPress = 2;
-		}
-		else if((GPIOB->IDR & (1U << 9)) == (1U << 9)){ //3
+		if((GPIOB->IDR & (1U << 5)) == (1U << 5)) //2
+				KeyPress = 2;
+
+		if((GPIOB->IDR & (1U << 9)) == (1U << 9)) //3
 			KeyPress = 3;
-		}
 
 		KeypadAllRows_RESET();
 		GPIOB->ODR |= (1U << 8);       //Row2
-		if((GPIOB->IDR & (1U << 4)) == (1U << 4)){      //4
+		if((GPIOB->IDR & (1U << 4)) == (1U << 4)) //4
 			KeyPress = 4;
-		}
-		else if((GPIOB->IDR & (1U << 5)) == (1U << 5)){ //5
+
+		if((GPIOB->IDR & (1U << 5)) == (1U << 5)) //5
 			KeyPress = 5;
-		}
-		else if((GPIOB->IDR & (1U << 9)) == (1U << 9)){ //6
+
+		if((GPIOB->IDR & (1U << 9)) == (1U << 9)) //6
 			KeyPress = 6;
-		}
 
 		KeypadAllRows_RESET();
 		GPIOB->ODR |= (1U << 2);       //Row3
-		if((GPIOB->IDR & (1U << 4)) == (1U << 4)){      //7
+		if((GPIOB->IDR & (1U << 4)) == (1U << 4)) //7
 			KeyPress = 7;
-		}
-		else if((GPIOB->IDR & (1U << 5)) == (1U << 5)){ //8
-			KeyPress = 8;
-		}
-		else if((GPIOB->IDR & (1U << 9)) == (1U << 9)){ //9
-			KeyPress = 9;
-		}
 
-		KeypadAllRows_RESET();
-		GPIOB->ODR |= (1U << 0);       	//Row4
-		if((GPIOB->IDR & (1U << 5)) == (1U << 5)){      //2
-			KeyPress = 0;
-		}
+		if((GPIOB->IDR & (1U << 5)) == (1U << 5)) //8
+			KeyPress = 8;
+
+		if((GPIOB->IDR & (1U << 9)) == (1U << 9)) //9
+			KeyPress = 9;
+
 
 		SSD_Digit1 = SSD_Digit2;
     	SSD_Digit2 = SSD_Digit3;
@@ -171,31 +167,21 @@ int main(void) {
     GPIOB->MODER &= ~(3U << 2*7);
     GPIOB->MODER |= (1U << 2*7);
 
+	GPIOA->ODR |= (1U <<  9); //D1
+	GPIOA->ODR |= (1U << 15); //D2
+	GPIOB->ODR |= (1U <<  7); //D3
+	GPIOA->ODR |= (1U <<  7); //D4
+
+	GPIOA->BRR |= (1U <<  9); //D1
+	GPIOA->BRR |= (1U << 15); //D2
+	GPIOB->BRR |= (1U <<  7); //D3
+	GPIOA->BRR |= (1U <<  7); //D4
 
     KeypadAllRows_SET();
 
     while(1) {
     	/* LOOP */
-    	SSD_Close();
-    	GPIOA->ODR |= (1U <<  7); //D4
-    	SSD_SET(SSD_Digit4);
-    	delay(100);
-
-    	SSD_Close();
-    	GPIOB->ODR |= (1U <<  7); //D3
-    	SSD_SET(SSD_Digit3);
-    	delay(100);
-
-    	SSD_Close();
-    	GPIOA->ODR |= (1U << 15); //D2
-    	SSD_SET(SSD_Digit2);
-    	delay(100);
-
-    	SSD_Close();
-    	GPIOA->ODR |= (1U <<  9); //D1
-    	SSD_SET(SSD_Digit1);
-    	delay(100);
-
+    	SSD_Fire();
     }
 
     return 0;
@@ -221,8 +207,7 @@ void KeypadAllRows_RESET(){
 	GPIOA->BRR |= (1U << 8);
 }
 
-void SSD_SET (uint8_t x){
-	SSD_RESET();
+void SSD_SET (uint32_t x){
 	switch(x){
 		case 0:
 			GPIOA->ODR |= (1U << 06); //G
@@ -287,8 +272,34 @@ void SSD_SETUP(){
 }
 
 void SSD_Close(){
-	GPIOA->ODR = (0U <<  9); //D1
-	GPIOA->ODR = (0U << 15); //D2
-	GPIOB->ODR = (0U <<  7); //D3
-	GPIOA->ODR = (0U <<  7); //D4
+	GPIOA->BRR |= (1U <<  9); //D1
+	GPIOA->BRR |= (1U << 15); //D2
+	GPIOB->BRR |= (1U <<  7); //D3
+	GPIOA->BRR |= (1U <<  7); //D4
+}
+
+void SSD_Fire(){
+	SSD_RESET();
+	SSD_Close();
+	GPIOA->ODR |= (1U <<  7); //D4
+	SSD_SET(SSD_Digit4);
+	delay(200);
+
+	SSD_RESET();
+	SSD_Close();
+	GPIOB->ODR |= (1U <<  7); //D3
+	SSD_SET(SSD_Digit3);
+	delay(200);
+
+	SSD_RESET();
+	SSD_Close();
+	GPIOA->ODR |= (1U << 15); //D2
+	SSD_SET(SSD_Digit2);
+	delay(200);
+
+	SSD_RESET();
+	SSD_Close();
+	GPIOA->ODR |= (1U <<  9); //D1
+	SSD_SET(SSD_Digit1);
+	delay(200);
 }
