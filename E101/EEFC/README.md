@@ -7,7 +7,7 @@ the board is given in the figure below.
 
 ## STM32G0
 
-![nucleo g031k8](img/g031k8.png)
+![nucleo g031k8](Documents/Pinout_g031k8.png)
 
 The board comes with ST-Link programmer / debugger so no need for an extra 
 hardware.
