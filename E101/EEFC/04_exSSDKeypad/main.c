@@ -1,5 +1,5 @@
 /*
- * project name : 04exSSDKeypad
+ * project name : 04_exSSDKeypad
  * file name    : main.c
  *
  * author       : Cem Furkan Demirkıran
