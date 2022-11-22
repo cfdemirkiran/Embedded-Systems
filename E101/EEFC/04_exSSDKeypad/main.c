@@ -6,7 +6,7 @@
  *
  * date         : 2022.10.07
  *
- * description  : Connected keypad to the micro controller, and using external interrupts detect button presses.
+ * description  : Connected keypad to the microcontroller, and using external interrupts detect button presses.
  *   Used an SSD to display the pressed button. Function created that will display the number on SSDs. Each
  *   time button is pressed, the number is slide in from the right of the SSD.
  */
@@ -16,14 +16,11 @@
 void delay(volatile uint32_t);
 void KeypadAllRows_SET(void);
 void KeypadAllRows_RESET(void);
-void SSD_RESET(void);
 void SSD_SET(volatile uint32_t);
 void SSD_Close(void);
-
 void SSD_Fire(void);
 
 volatile uint32_t KeyPress;
-volatile uint32_t SSD_Digit;
 volatile uint32_t SSD_Digit1 = 0;
 volatile uint32_t SSD_Digit2 = 0;
 volatile uint32_t SSD_Digit3 = 0;
@@ -37,7 +34,7 @@ void EXTI4_15_IRQHandler(void){
 	GPIOA->BRR |= (1U << 8);
 
 	//Row4
-	if((GPIOB->IDR & (1U << 5)) == (1U << 5)) //2
+	if((GPIOB->IDR & (1U << 5)) == (1U << 5)) //0
 		KeyPress = 0;
 
 	GPIOB->BRR |= (1U << 0);
@@ -87,7 +84,7 @@ void EXTI4_15_IRQHandler(void){
 	SSD_Digit4 = KeyPress;
 
 	KeypadAllRows_SET();
-	EXTI->RPR1 |= (1U << 4);
+	EXTI->RPR1 |= (1U << 4); // Reseting flags
 	EXTI->RPR1 |= (1U << 5);
 	EXTI->RPR1 |= (1U << 9);
 }
@@ -196,13 +193,6 @@ void KeypadAllRows_SET(){
 	GPIOB->ODR |= (1U << 2);
 	GPIOB->ODR |= (1U << 8);
 	GPIOA->ODR |= (1U << 8);
-}
-
-void KeypadAllRows_RESET(){
-	GPIOB->BRR |= (1U << 0);
-	GPIOB->BRR |= (1U << 2);
-	GPIOB->BRR |= (1U << 8);
-	GPIOA->BRR |= (1U << 8);
 }
 
 void SSD_SET (uint32_t x){
