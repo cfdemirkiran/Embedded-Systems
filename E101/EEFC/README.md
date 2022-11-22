@@ -1,10 +1,13 @@
-# stm32g0
+# GTU EEFC
 
+Gebze Technical University - Electronic Engineering fcayci Lecture Documents. 
 Examples for using Cortex-M0+ based stm32g0 processor. All the examples are made 
-for Nucleo G031K8 board. The pinouts and all the alternative functionality of 
-the board is given in the Figure below.
+for Nucleo G031K8 board. Sample codes are created to start with number_xxx. Codes starting with 00_xxx are sample codes written by fcayci. The codes that start as 01_xxx and continue to increase are project files written by me for specific purposes. Stm32g0 proccessor's pinouts and all the alternative functionality of 
+the board is given in the figure below.
 
-![nucleo g031k8](img/g031k8.png)
+## STM32G0
+
+![nucleo g031k8](Documents/Pinout_g031k8.png)
 
 The board comes with ST-Link programmer / debugger so no need for an extra 
 hardware.
@@ -28,9 +31,4 @@ using command line.
 1. [Cortex-M0+ Technical Reference Manual](https://developer.arm.com/documentation/ddi0484/c)
 1. Nucleo-G031K8 [Schematic](https://www.st.com/resource/en/schematic_pack/mb1455-g031k8-c01_schematic.pdf) 
 
-
-If you see a problem in the code, please create a PR, explaining the situation 
-with the code fixes.
-
-Happy hacking!...
-
+Thanks for fcayci...<3
