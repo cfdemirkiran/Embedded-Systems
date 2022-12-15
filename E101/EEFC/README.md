@@ -1,4 +1,4 @@
-# GTU EEFC
+# EEFC
 
 Gebze Technical University - Electronic Engineering fcayci Lecture Documents. 
 Examples for using Cortex-M0+ based stm32g0 processor. All the examples are made 
