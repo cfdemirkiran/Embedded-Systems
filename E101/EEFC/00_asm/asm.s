@@ -2,7 +2,7 @@
  * project name : 00_asm
  * file name    : asm.s
  *
- * author       : Furkan Çaycı
+ * author       : Cem Furkan Demirkıran
  *
  * date         : 2022.10.14
  *
