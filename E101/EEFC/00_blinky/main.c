@@ -2,7 +2,7 @@
  * project name : 00_blinky
  * file name    : main.c
  *
- * author       : Furkan Çaycı
+ * author       : Cem Furkan Demirkıran
  *
  * date         : 2022.10.21
  *
